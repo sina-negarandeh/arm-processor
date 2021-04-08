@@ -1,0 +1,26 @@
+# ModelSim generated files and directories (temp files and so on)
+[_@]*
+
+# Compilation output of ModelSim
+*.mti
+*.dat
+*.dbs
+*.psm
+*.bak
+*.cmp
+*.jpg
+*.html
+*.bsf
+
+# Simulation output of ModelSim
+wlf*
+*.wlf
+*.vstf
+*.ucdb
+cov*/
+transcript*
+sc_dpiheader.h
+vsim.dbg
+
+# Apple Desktop Services Store
+.DS_Store
