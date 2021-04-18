@@ -5,4 +5,6 @@ module MEM_Stage (
   output [31:0] pc
   );
 
+  assign pc = pc_in;
+
 endmodule
