@@ -15,5 +15,15 @@ module IF_Stage_Reg (
   output reg [31:0] pc,
   output reg [31:0] instruction
   );
+  
+  always @ (posedge clk, posedge rst) begin
+    if (rst) begin
+      pc <= 32'b00000000000000000000000000000000;
+      instruction <= 32'b00000000000000000000000000000000;
+    end else begin
+      pc <= pc_in;
+      instruction <= instruction_in;
+    end
+  end
 
 endmodule

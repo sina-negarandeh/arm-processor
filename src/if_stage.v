@@ -12,5 +12,16 @@ module IF_Stage (
   output [31:0] pc,
   output [31:0] instruction
   );
+  
+  wire [31:0] mux;
+  wire [31:0] pc_out;
+  
+  assign mux = branch_tacken ? branch_address : pc;
+  
+  PC pc_reg (clk, rst, mux, freeze, pc_out);
+  
+  assign pc = pc_out + 4;
+  
+  Instruction_Memory instruction_memory (clk, rst, pc_out, instruction);
 
 endmodule
