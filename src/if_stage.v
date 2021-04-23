@@ -2,11 +2,11 @@ module IF_Stage (
   input         clk,
   input         rst,
   
-  // Executaion Stage
+  // From Executaion Stage
   input         branch_tacken,
   input [31:0]  branch_address,
   
-  // Hazard Detection Unit
+  // From Hazard Detection Unit
   input         freeze,
   
   output [31:0] pc,
