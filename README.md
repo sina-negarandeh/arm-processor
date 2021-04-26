@@ -6,7 +6,7 @@ A simple implementation of an ARM-based processor.
 
 The overall architecture of ARM processors simplified:
 
-![ARM-processors Architecture](./ARM_processors_architecture.png)
+![ARM-processors Architecture](./img/ARM_processors_architecture.png)
 
 ## Condition codes
 
@@ -14,4 +14,12 @@ ConditionCheck module receives the condition bits (cond) from the input instruct
 
 The conditions for the condition to be met are listed in Table.
 
-![Table A3-1 Condition codes](./Table_A3-1_Condition_codes.png)
+![Table A3-1 Condition codes](./img/Table_A3-1_Condition_codes.png)
+
+## ARM-processor Instructions
+
+![Table 2 CPU Instructions](./img/Table_2_CPU_Instructions.png)
+
+## ALU Instructions
+
+![Table 5 ALU Instructions](./img/Table_5_ALU_Instructions.png)
