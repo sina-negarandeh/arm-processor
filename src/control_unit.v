@@ -83,7 +83,7 @@ module ControlUnit (
         endcase
       end
       2'b01: begin  // memory access
-        case (s)
+        case (s_in)
           1'b1: begin // R-type Instruction: LDR Description: Load Register
             exe_cmd = 4'b0010;
             wb_en = 1'b1;
