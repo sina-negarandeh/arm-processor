@@ -9,7 +9,7 @@ module ID_Stage_Reg (
   input [3:0]        exe_cmd_in,
   input              b_in,
   input              s_in,
-  input              pc_in,
+  input [31:0]       pc_in,
   input [31:0]       value_rn_in,
   input [31:0]       value_rm_in,
   input [11:0]       shift_operand_in,

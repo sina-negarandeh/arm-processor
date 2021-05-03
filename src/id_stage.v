@@ -47,7 +47,7 @@ module ID_Stage (
   assign rd = instruction[15:12];
   
   wire [3:0] register_file_src_2;
-  assign regfile_src2 = mem_w_en ? rd : rm;
+  assign register_file_src_2 = mem_w_en ? rd : rm;
   RegisterFile register_file(clk, rst, rn, register_file_src_2, wb_dest, wb_value, wb_wb_en, value_rn, value_rm);
 
   wire [3:0] cond;
@@ -87,6 +87,6 @@ module ID_Stage (
   assign two_src = ((~instruction[25]) || mem_w_en);
 
   assign src_1 = rn;
-  assign src_2 = regfile_src2;
+  assign src_2 = register_file_src_2;
 
 endmodule
