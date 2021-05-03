@@ -23,3 +23,7 @@ The conditions for the condition to be met are listed in Table.
 ## ALU Instructions
 
 ![Table 5 ALU Instructions](./img/Table_5_ALU_Instructions.png)
+
+## Shift Case (In shift immediate commands)
+
+![Table 4 shift case in shift immediate commands](./img/Table_4_shift_case_in_shift_immediate_commands.png)
