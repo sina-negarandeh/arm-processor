@@ -48,17 +48,17 @@ module ID_Stage (
   
   wire [3:0] register_file_src_2;
   assign regfile_src2 = mem_w_en ? rd : rm;
-  Register_File register_file(clk, rst, rn, register_file_src_2, wb_dest, wb_value, wb_wb_en, value_rn, value_rm);
+  RegisterFile register_file(clk, rst, rn, register_file_src_2, wb_dest, wb_value, wb_wb_en, value_rn, value_rm);
 
   wire [3:0] cond;
   wire condition_check_result;
   
   assign cond = instruction[31:28];
   
-  Condition_Check condition_check(cond, sr, condition_check_result);
+  ConditionCheck condition_check(cond, sr, condition_check_result);
   
   wire or_output;
-  wire exe_cmd_ouput;
+  wire [3:0] exe_cmd_ouput;
   wire mem_r_en_output;
   wire mem_w_en_output;
   wire wb_en_output;
@@ -76,7 +76,7 @@ module ID_Stage (
   assign op_code = instruction[24:21];
   assign s_in = instruction[20];
   
-  Control_Unit control_unit(mode, op_code, s_in, exe_cmd_ouput, mem_r_en_output, mem_w_en_output, wb_en_output, s_output, b_output);
+  ControlUnit control_unit(mode, op_code, s_in, exe_cmd_ouput, mem_r_en_output, mem_w_en_output, wb_en_output, s_output, b_output);
 
   assign pc = pc_in;
   assign shift_operand = instruction[11:0];
