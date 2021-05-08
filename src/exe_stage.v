@@ -13,13 +13,16 @@ module EXE_Stage (
   input [11:0] shift_operand,
   input [23:0] imm_signed_24,
   input [3:0] sr,
+  input [3:0] dest_in,
 
   output wb_en,
   output mem_r_en,
   output mem_w_en,
   output [31:0] alu_result,
   output [31:0] br_addr,
-  output [3:0] status
+  output [3:0] status,
+  output [31:0] val_rm_out,
+  output [3:0] dest
   );
   
   wire or_output;
@@ -36,5 +39,7 @@ module EXE_Stage (
   assign wb_en = wb_en_in;
   assign mem_r_en = mem_r_en_in;
   assign mem_w_en = mem_w_en_in;
+  assign val_rm_out = val_rm;
+  assign dest = dest_in;
 
 endmodule

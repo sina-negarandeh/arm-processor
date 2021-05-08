@@ -49,6 +49,8 @@ module Val2Generator  (
                   //
                 end
               endcase
+            end else begin
+              val_2 = rm;
             end
           end
         endcase
