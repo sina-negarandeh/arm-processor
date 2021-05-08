@@ -20,7 +20,6 @@ module ARM (
     // Instruction Decode Stage
   
   wire hazard;
-  wire [3:0]   sr;
   wire [3:0]   wb_dest;
   wire [31:0]  wb_value;
   wire         wb_wb_en;
@@ -43,7 +42,7 @@ module ARM (
   wire [3:0]  src_1_id;
   wire [3:0]  src_2_id;
   
-  // ID STAGE REG
+  // Instruction Decode Stage Reg
 
   wire        wb_en_id_reg;
   wire        mem_r_en_id_reg;
@@ -58,41 +57,82 @@ module ARM (
   wire        imm_id_reg;
   wire [23:0] imm_signed_24_id_reg;
   wire [3:0]  dest_id_reg;
+  wire [3:0] sr_id_reg;
   
-  // Other Stages
+  // Execution Stage
   
-  wire [31:0] pc_exe;
-  wire [31:0] pc_exe_reg;
-  wire [31:0] pc_mem;
-  wire [31:0] pc_mem_reg;
-  wire [31:0] pc_wb;
+  wire wb_en_exe;
+  wire mem_r_en_exe;
+  wire mem_w_en_exe;
+  wire [31:0] alu_result_exe;
+  wire [31:0] br_addr_exe;
+  wire [3:0] status_exe;
+  wire [31:0] val_rm_exe;
+  wire [3:0] dest_exe;
   
-  assign branch_tacken = 1'b0;
-  assign branch_address = 32'b00000000000000000000000000000000;
-  assign freeze = 1'b0;
+  // Status Register
   
-  assign flush = 1'b0;
+  wire [3:0]   sr;
   
-  assign hazard = 1'b0;
-  assign sr = 4'b0000;
-  assign wb_dest = 4'b0000;
-  assign wb_value = 32'b00000000000000000000000000000000;
-  assign wb_wb_en = 1'b0;
+  // Execution Stage Reg
   
-  IF_Stage if_stage (clk, rst, branch_tacken, branch_address, freeze, pc, instruction);
-  IF_Stage_Reg if_stage_reg (clk, rst, pc, instruction, flush, freeze, pc_if_reg, instruction_if_reg);
+  wire        wb_en_exe_reg;
+  wire        mem_r_en_exe_reg;
+  wire        mem_w_en_exe_reg;
+  wire [31:0] alu_result_exe_reg;
+  wire [31:0] st_val_exe_reg;
+  wire [3:0]  dest_exe_reg;
+  wire [31:0] val_rm_exe_reg;
+  
+  // Memory Stage
+  
+  wire wb_en_mem;
+  wire mem_r_en_mem;
+  wire mem_w_en_mem;
+  wire [31:0] alu_result_mem;
+  wire [31:0] data_memory_mem;
+  wire [3:0] dest_mem;
+  
+  // Memory Stage Reg
+  
+  wire         wb_en_mem_reg;
+  wire         mem_r_en_mem_reg;
+  wire [31:0]  alu_result_mem_reg;
+  wire [31:0]  data_memory_out_mem_reg;
+  wire [3:0]   dest_mem_reg;
+  
+  IF_Stage if_stage (clk, rst, b_id_reg, br_addr_exe, hazard, pc, instruction);
+  IF_Stage_Reg if_stage_reg (clk, rst, pc, instruction, b_id_reg, hazard, pc_if_reg, instruction_if_reg);
+   
+  HazardDetectionUnit hazard_detection_unit (clk, rst, src_1_id, src_2_id, dest_exe, wb_en_exe,
+    dest_mem, wb_en_mem, two_src_id, hazard);
   
   ID_Stage id_stage (clk, rst, pc_if_reg, instruction_if_reg, hazard, sr, wb_dest, wb_value, wb_wb_en, wb_en_id,
     mem_r_en_id, mem_w_en_id, exe_cmd_id, b_id, s_id, pc_id, value_rn_id, value_rm_id, shift_operand_id, imm_id, imm_signed_24_id, dest_id, two_src_id, src_1_id, src_2_id);
   
   ID_Stage_Reg id_stage_reg (clk, rst, wb_en_id, mem_r_en_id, mem_w_en_id, exe_cmd_id, b_id, s_id, pc_id,
-    value_rn_id, value_rm_id, shift_operand_id, imm_id, imm_signed_24_id, dest_id, flush,
-    wb_en_id_reg, mem_r_en_id_reg, mem_w_en_id_reg, exe_cmd_id_reg, b_id_reg, s_id_reg, pc_id_reg, value_rn_id_reg, value_rm_id_reg, shift_operand_id_reg, imm_id_reg, imm_signed_24_id_reg, dest_id_reg);
+    value_rn_id, value_rm_id, shift_operand_id, imm_id, imm_signed_24_id, dest_id, b_id_reg, sr,
+    wb_en_id_reg, mem_r_en_id_reg, mem_w_en_id_reg, exe_cmd_id_reg, b_id_reg, s_id_reg, pc_id_reg, value_rn_id_reg, value_rm_id_reg, shift_operand_id_reg, imm_id_reg, imm_signed_24_id_reg, dest_id_reg, sr_id_reg);
   
-  EXE_Stage exe_stage (clk, rst, pc_id_reg, pc_exe);  
-  EXE_Stage_Reg exe_stage_reg (clk, rst, pc_exe, pc_exe_reg);
-  MEM_Stage mem_stage (clk, rst, pc_exe_reg, pc_mem);
-  MEM_Stage_Reg mem_stage_reg (clk, rst, pc_mem, pc_mem_reg);
-  WB_Stage wb_stage (clk, rst, pc_mem_reg, pc_wb);
+  EXE_Stage exe_stage (clk, rst, exe_cmd_id_reg, wb_en_id_reg, mem_r_en_id_reg, mem_w_en_id_reg,
+    pc_id_reg, value_rn_id_reg, value_rm_id_reg, imm_id_reg, shift_operand_id_reg, imm_signed_24_id_reg,
+    sr_id_reg, dest_id_reg, wb_en_exe, mem_r_en_exe, mem_w_en_exe, alu_result_exe, br_addr_exe, status_exe, val_rm_exe, dest_exe);
+    
+  StatusRegister status_register (clk, rst, s_id_reg, status_exe, sr);
+   
+  EXE_Stage_Reg exe_stage_reg (clk, rst, wb_en_exe, mem_r_en_exe, mem_w_en_exe, alu_result_exe,
+    dest_exe, val_rm_exe, wb_en_exe_reg, mem_r_en_exe_reg, mem_w_en_exe_reg, alu_result_exe_reg,
+    dest_exe_reg, val_rm_exe_reg);
 
+  MEM_Stage mem_stage (clk, rst, wb_en_exe_reg, mem_r_en_exe_reg, mem_w_en_exe_reg, alu_result_exe_reg,
+    val_rm_exe_reg, dest_exe_reg, wb_en_mem, mem_r_en_mem, mem_w_en_mem, alu_result_mem, data_memory_mem, dest_mem);
+
+  MEM_Stage_Reg mem_stage_reg (clk, rst, wb_en_mem, mem_r_en_mem, alu_result_mem, data_memory_mem, dest_mem,
+    wb_en_mem_reg, mem_r_en_mem_reg, alu_result_mem_reg, data_memory_out_mem_reg, dest_mem_reg);
+
+  wire [31:0] mem_result;
+  assign mem_result = 32'b00000000000000000000000000000000;
+
+  WB_Stage wb_stage (clk, rst, alu_result_mem_reg, data_memory_out_mem_reg, mem_r_en_mem_reg, dest_mem_reg, wb_en_mem_reg,
+    wb_dest, wb_value, wb_wb_en);
 endmodule
