@@ -40,7 +40,10 @@ module ALU (
       4'b1001: begin  // Instruction: MVN Operation:  result = ~in2
         alu_result = ~val_2;
       end
-      4'b0010: begin  // Instruction: ADD Operation:  result = in1 + in2
+      // Instruction: ADD Operation:  result = in1 + in2
+      // Instruction: LDR Operation:  result = in1 + in2
+      // Instruction: STR Operation:  result = in1 + in2
+      4'b0010: begin
         {c, alu_result} = val_1 + val_2;
         if ((val_1[31] == val_2[31]) && (val_1[31] == (~alu_result[31]))) v = 1'b1;
       end
@@ -48,15 +51,19 @@ module ALU (
         {c, alu_result} = val_1 + val_2 + c_in;
         if ((val_1[31] == val_2[31]) && (val_1[31] == (~alu_result[31]))) v = 1'b1;
       end
-      4'b0100: begin  // Instruction: SUB Operation:  result = in1 - in2
+      // Instruction: SUB Operation:  result = in1 - in2
+      // Instruction: CMP Operation:  result = in1 - in2
+      4'b0100: begin
         {c, alu_result} = val_1 - val_2;
         if ((val_1[31] == (~val_2[31])) && (val_1[31] == (~alu_result[31]))) v = 1'b1;
       end
-      4'b0101: begin  // Instruction: SBC Operation:  result = in1 - in2 ? ~C
-        {c, alu_result} = val_1 - val_2 - (~c_in);
+      4'b0101: begin  // Instruction: SBC Operation:  result = in1 - in2 - ~C
+        {c, alu_result} = val_1 - val_2 - {{31'b0000000000000000000000000000000}, ~(c_in)};
         if ((val_1[31] == (~val_2[31])) && (val_1[31] == (~alu_result[31]))) v = 1'b1;
       end
-      4'b0110: begin  // Instruction: AND Operation:  result = in1 & in2
+      // Instruction: AND Operation:  result = in1 & in2
+      // Instruction: TST Operation:  result = in1 & in2
+      4'b0110: begin
         alu_result = val_1 & val_2;
       end
       4'b0111: begin  // Instruction: ORR Operation:  result = in1 | in2
