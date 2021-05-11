@@ -2,7 +2,7 @@
 
 A simple implementation of an ARM-based processor.
 
-## ARM-processor Architecture
+## ARM-processor architecture
 
 The overall architecture of ARM processor simplified:
 
@@ -14,19 +14,63 @@ ConditionCheck module receives the condition bits (cond) from the input instruct
 
 The conditions for the condition to be met are listed in Table.
 
-![Table A3-1 Condition codes](./img/Table_A3-1_Condition_codes.png)
+### Condition codes table
 
-## ARM-processor Instructions
+| Opcode | Mnemonic extension |                      Meaning                     |                             Condition flag state                            |
+|:------:|:------------------:|:------------------------------------------------:|:---------------------------------------------------------------------------:|
+|  0000  |         EQ         |                       Equal                      |                                    Z set                                    |
+|  0001  |         NE         |                     Not equal                    |                                   Z clear                                   |
+|  0010  |        CS/HS       |         Carry set/unsigned higher or same        |                                    C set                                    |
+|  0011  |        CC/LO       |            Carry clear/unsigned lower            |                                   C clear                                   |
+|  0100  |         MI         |                  Minus/negative                  |                                    N set                                    |
+|  0101  |         PL         |               Plus/positive or zero              |                                   N clear                                   |
+|  0110  |         VS         |                     Overflow                     |                                    V set                                    |
+|  0111  |         VC         |                    No overflow                   |                                   V clear                                   |
+|  1000  |         HI         |                  Unsigned higher                 |                              C set and Z clear                              |
+|  1001  |         LS         |              Unsigned lower or same              |                               C clear or Z set                              |
+|  1010  |         GE         |           Signed greater than or equal           |               N set and V set, or N clear and V clear (N == V)              |
+|  1011  |         LT         |                 Signed less than                 |               N set and V clear, or N clear and V set (N != V)              |
+|  1100  |         GT         |                Signed greater than               | Z clear, and either N set and V set, or N clear and V clear (Z == 0,N == V) |
+|  1101  |         LE         |             Signed less than or equal            |     Z set, or N set and V clear, or N clear and V set (Z == 1 or N != V)    |
+|  1110  |         AL         |              Always (unconditional)              |                                      -                                      |
+|  1111  |          -         | The behavior depends on the architecture version |                                      -                                      |
+
+## ARM-processor instructions
 
 The processor designed and implemented in this project is a simplified ARM processor with 12 main instructions. This processor is capable of performing mathematical operations (ADD, ADC, SUB, SBC), logic operations (AND, ORR, EOR), comparison operations (CMP, TST), read and write operations in memory (LD, ST), has the jump operation (B). The list of operations and their details are given in Table of the CPU Command Set. The NOP command is not implemented as a command.
 
-![Table 2 CPU Instructions](./img/Table_2_CPU_Instructions.png)
+### Mathematical, logic, comparison and memory instruction table
 
-## ALU Instructions
+|                     |                     | 31:28 | 27:26 | 25 |  24:21 | 20 | 19:16 | 15:12 |      11:00      |
+|:-------------------:|:-------------------:|:-----:|:-----:|:--:|:------:|:--:|:-----:|:-----:|:---------------:|
+| R-type Instructions |     Description     |  Cond |  Mode |  I | Opcode |  S |   Rn  |   Rd  | shifter operand |
+|         NOP         |     No Operation    |  1110 |   00  |  0 |  0000  |  0 |  0000 |  0000 |   00000000000   |
+|         MOV         |         Move        |  cond |   00  |  I |  1101  |  S |  0000 |   Rd  | shifter operand |
+|         MVN         |       Move NOT      |  cond |   00  |  I |  1111  |  S |  0000 |   Rd  | shifter operand |
+|         ADD         |         Add         |  cond |   00  |  I |  0100  |  S |   Rn  |   Rd  | shifter operand |
+|         ADC         |    Add with Carry   |  cond |   00  |  I |  0101  |  S |   Rn  |   Rd  | shifter operand |
+|         SUB         |     Subtraction     |  cond |   00  |  I |  0010  |  S |   Rn  |   Rd  | shifter operand |
+|         SBC         | Subtract with Carry |  cond |   00  |  I |  0110  |  S |   Rn  |   Rd  | shifter operand |
+|         AND         |         And         |  cond |   00  |  I |  0000  |  S |   Rn  |   Rd  | shifter operand |
+|         ORR         |          Or         |  cond |   00  |  I |  1100  |  S |   Rn  |   Rd  | shifter operand |
+|         EOR         |     Exclusive OR    |  cond |   00  |  I |  0001  |  S |   Rn  |   Rd  | shifter operand |
+|         CMP         |       Compare       |  cond |   00  |  I |  1010  |  1 |   Rn  |  0000 | shifter operand |
+|         TST         |         Test        |  cond |   00  |  I |  1000  |  1 |   Rn  |  0000 | shifter operand |
+|         LDR         |    Load Register    |  cond |   01  |  0 |  0100  |  1 |   Rn  |   Rd  |    offset_12    |
+|         STR         |    Store Register   |  cond |   01  |  0 |  0100  |  0 |   Rn  |   Rd  |    offset_12    |
+
+### Jump instruction table
+
+|                     |             | 31:28 | 27:26 | 25 | 24 | 23:0            |
+|---------------------|-------------|-------|-------|----|----|-----------------|
+| R-type Instructions | Description |  Cond |  Mode |  I |    |                 |
+|          B          |    Branch   |  cond |   10  |  1 |  0 | signed_immed_24 |
+
+## ALU instructions
 
 The execution stage will include the ALU and the calculation of the jump command address. The ALU has two data inputs, data output, and a four-bit input generated by the Control Unit, determining the ALU operation. This control input is specified in Table.
 
-### ALU Instructions Table
+### ALU instructions table
 
 | Instruction | ALU Command |        Operation        |
 |:-----------:|:-----------:|:-----------------------:|
