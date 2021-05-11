@@ -31,12 +31,49 @@ The execution stage will include the ALU and the calculation of the jump command
 ## Shift
 
 - Types of shifts
-  - 32 bit immediate
-  - [Immediate shifts](#immediate-shifts)
-  - Registershifts
+  - [32 bit immediate](#32-bit-immediate-shift)
+  - [Immediate shifts](#immediate-shift)
+  - [Register shift](#register-shift)
 
-### Immediate shifts
+### 32 bit immediate shift
+
+In this case, the value of the immediate bit is equal to one. The 9-bit 8_immed number is placed in a 32-bit container, then rotated twice as much as the value of rotate_imm.
+
+#### 32 bit immediate shift instructions  
+
+| 31:28 | 27 | 26 | 25 |  24:21 | 20 | 19:16 | 15:12 |    11:8    |   7:0   |
+|:-----:|:--:|:--:|:--:|:------:|:--:|:-----:|:-----:|:----------:|:-------:|
+|  Cond |  0 |  0 |  1 | opcode |  S |   Rn  |   Rd  | rotate_imm | immed_8 |
+
+### Immediate shift
 
 In this case, the immediate bit and the fourth bit of the instruction are also equal to zero. The second operand is read from the register. The read number is then shifted by the value of shift_imm based on shift mode. Shift modes are listed in the table below.
 
+<!-->
 ![Table 4 shift case in shift immediate commands](./img/Table_4_shift_case_in_shift_immediate_commands.png)
+<--->
+
+#### Immediate shift instruction  
+
+| 31:28 | 27 | 26 | 25 |  24:21 | 20 | 19:16 | 15:12 |    11:7   |  6:5  | 4 | 3:0 |
+|:-----:|:--:|:--:|:--:|:------:|:--:|:-----:|:-----:|:---------:|:-----:|---|-----|
+|  Cond |  0 |  0 |  0 | opcode |  S |   Rn  |   Rd  | shift_imm | shift | 0 | Rm  |
+
+#### Shift mode in immediate shift instruction
+
+| Shift mode |       Description      | Value |
+|:----------:|:----------------------:|:-----:|
+|     LSL    |   Logical shift left   |   00  |
+|     LSR    |   Logical shift right  |   01  |
+|     ASR    | Arithmetic shift right |   10  |
+|     ROR    |      Rotate right      |   11  |
+
+### Register shift
+
+In this case, the immediate bit is equal to zero, and the second operand is read from the register. The read number is then shifted to the Rs register value based on the shift mode. This type of shift has not been implemented in the processor.
+
+#### Register shift instruction
+
+| 31:28 | 27 | 26 | 25 |  24:21 | 20 | 19:16 | 15:12 |    11:7   |  6:5  | 4 | 3:0 |
+|:-----:|:--:|:--:|:--:|:------:|:--:|:-----:|:-----:|:---------:|:-----:|---|-----|
+|  Cond |  0 |  0 |  0 | opcode |  S |   Rn  |   Rd  | shift_imm | shift | 0 | Rm  |
