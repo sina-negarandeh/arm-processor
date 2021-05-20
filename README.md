@@ -134,3 +134,9 @@ In this case, the immediate bit is equal to zero, and the second operand is read
 | 31:28 | 27 | 26 | 25 |  24:21 | 20 | 19:16 | 15:12 |    11:7   |  6:5  | 4 | 3:0 |
 |:-----:|:--:|:--:|:--:|:------:|:--:|:-----:|:-----:|:---------:|:-----:|---|-----|
 |  Cond |  0 |  0 |  0 | opcode |  S |   Rn  |   Rd  | shift_imm | shift | 0 | Rm  |
+
+## Operand forwarding (data forwarding) optimization
+
+Operand forwarding (or data forwarding) is an optimization in pipelined CPUs to limit performance deficits due to pipeline stalls. A data hazard can lead to a pipeline stall when the current operation has to wait for the results of an earlier operation that has not yet been finished.
+
+![ARM-processor Architecture with operand forwarding](./img/arm_processor_architecture_forwarding.png)
