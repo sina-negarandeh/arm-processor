@@ -17,6 +17,9 @@ module ID_Stage_Reg (
   input [23:0]      imm_signed_24_in,
   input [3:0]       dest_in,
   
+  input [3:0]       src_1_in,
+  input [3:0]       src_2_in,
+  
   // From Executaion Stage
   input             flush,
   
@@ -36,7 +39,10 @@ module ID_Stage_Reg (
   output reg        imm,
   output reg [23:0] imm_signed_24,
   output reg [3:0]  dest,
-  output reg [3:0]  sr
+  output reg [3:0]  sr,
+  
+  output reg [3:0]       src_1,
+  output reg [3:0]       src_2
   );
   
   always @ (posedge clk, posedge rst) begin
@@ -71,6 +77,9 @@ module ID_Stage_Reg (
         imm_signed_24 <= 24'b000000000000000000000000;
         dest <= 4'b0000;
         sr <= 4'b0000;
+        
+        src_1 <= 4'b0000;
+        src_2 <= 4'b0000;
       end else begin
         wb_en <= wb_en_in;
         mem_r_en <= mem_r_en_in;
@@ -86,6 +95,9 @@ module ID_Stage_Reg (
         imm_signed_24 <= imm_signed_24_in;
         dest <= dest_in;
         sr <= sr_in;
+        
+        src_1 <= src_1_in;
+        src_2 <= src_2_in;
       end
     end
   end
