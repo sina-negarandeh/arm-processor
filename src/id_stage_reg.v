@@ -23,6 +23,8 @@ module ID_Stage_Reg (
   // From Executaion Stage
   input             flush,
   
+  input             freeze,
+  
   // From Status Regiser
   input [3:0]       sr_in,
   
@@ -61,7 +63,7 @@ module ID_Stage_Reg (
       imm_signed_24 <= 24'b000000000000000000000000;
       dest <= 4'b0000;
       sr <= 4'b0000;
-    end else begin
+    end else if (!freeze) begin 
       if (flush) begin
         wb_en <= 1'b0;
         mem_r_en <= 1'b0;
