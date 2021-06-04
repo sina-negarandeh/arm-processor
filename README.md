@@ -140,3 +140,9 @@ In this case, the immediate bit is equal to zero, and the second operand is read
 Operand forwarding (or data forwarding) is an optimization in pipelined CPUs to limit performance deficits due to pipeline stalls. A data hazard can lead to a pipeline stall when the current operation has to wait for the results of an earlier operation that has not yet been finished.
 
 ![ARM-processor Architecture with operand forwarding](./img/arm_processor_architecture_forwarding.png)
+
+## SRAM
+
+SRAM is used as the main memory for the arm processor. Using SRAM as the main memory requires a module for controlling SRAM. The controller module must work in sync, meaning that reading and writing in memory must be done in sync. When the processor waits for more than one clock in the memory phase for a read or write operation, the pipeline must be stopped; hence the commands in the other phases (Fetch, Decode, and Execute) must remain in place (freeze). The operation of reading and writing in SRAM memory is 6 clocks.
+
+![ARM-processor Architecture with sram](./img/arm_processor_architecture_sram.png)
