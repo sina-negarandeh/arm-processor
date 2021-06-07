@@ -21,7 +21,7 @@ module SRAM_Controller (
   always @ (posedge clk, posedge rst) begin
     if (rst) counter <= 3'b000;
     else begin
-      if (((ps == 2'b01) || (ps == 2'b10)) && (counter < 3'b110)) counter <= counter + 3'b001;
+      if (((ps == 2'b01) || (ps == 2'b10)) && (counter < 3'b100)) counter <= counter + 3'b001;
       else counter <= 3'b000;
     end
   end
@@ -34,13 +34,13 @@ module SRAM_Controller (
   always @ (ps, read_en, write_en, counter) begin // Produce next state
     case (ps)
         2'b00: ns = read_en ? 2'b01 : (write_en ? 2'b10 : 2'b00);
-        2'b01: ns = (counter < 3'b110) ? 2'b01 : 2'b00;
-        2'b10: ns = (counter < 3'b110) ? 2'b10 : 2'b00;
+        2'b01: ns = (counter < 3'b100) ? 2'b01 : 2'b00;
+        2'b10: ns = (counter < 3'b100) ? 2'b10 : 2'b00;
     endcase
   end
   
-  assign ready = ((ns == 2'b01) && (counter < 3'b110)) ? 1'b0 :
-                 ((ns == 2'b10) && (counter < 3'b110)) ? 1'b0 :
+  assign ready = ((ns == 2'b01) && (counter < 3'b100)) ? 1'b0 :
+                 ((ns == 2'b10) && (counter < 3'b100)) ? 1'b0 :
                  1'b1;
   
   wire [31:0] data_address;
@@ -51,7 +51,7 @@ module SRAM_Controller (
   assign read_data = sram_dq;
   
   // STR
-  assign sram_w_en = ((ns == 2'b10) && (counter < 3'b110)) ? 1'b0 : 1'b1;
-  assign sram_dq = ((ns == 2'b10) && (counter < 3'b110)) ? write_data : 32'bzzzz_zzzz_zzzz_zzzz_zzzz_zzzz_zzzz_zzzz;
+  assign sram_w_en = ((ns == 2'b10) && (counter < 3'b100)) ? 1'b0 : 1'b1;
+  assign sram_dq = ((ns == 2'b10) && (counter < 3'b100)) ? write_data : 32'bzzzz_zzzz_zzzz_zzzz_zzzz_zzzz_zzzz_zzzz;
 
 endmodule
