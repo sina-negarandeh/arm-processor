@@ -2,7 +2,7 @@ module ARM (
   input           clk,
   input           rst,
   
-  inout [31:0]    sram_dq,
+  inout [63:0]    sram_dq,
   output          sram_we_n,  
   output [16:0]   sram_address
   );
