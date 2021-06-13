@@ -8,7 +8,7 @@ module Test_Bench ();
   
   wire sram_we_n;
   wire [16:0] sram_address;
-  wire [31:0] sram_dq;
+  wire [63:0] sram_dq;
  
   ARM arm (clk, rst, sram_dq, sram_we_n, sram_address);
   
