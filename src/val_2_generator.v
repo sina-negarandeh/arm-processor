@@ -31,7 +31,7 @@ module Val2Generator  (
             val_2 = {{eight_immed}, {{24{1'b0}}, {eight_immed}}} >> (rotate_imm * 2);
           end
           1'b0: begin // Immediate shifts
-            if (shift_operand[3] == 1'b0) begin
+            if (shift_operand[4] == 1'b0) begin
               case (shift)
                 2'b00: begin  // Shift case: LSL  Description: Logical shift left
                   val_2 = rm << shift_imm;
