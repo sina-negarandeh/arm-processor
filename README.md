@@ -146,3 +146,25 @@ Operand forwarding (or data forwarding) is an optimization in pipelined CPUs to 
 SRAM is used as the main memory for the arm processor. Using SRAM as the main memory requires a module for controlling SRAM. The controller module must work in sync, meaning that reading and writing in memory must be done in sync. When the processor waits for more than one clock in the memory phase for a read or write operation, the pipeline must be stopped; hence the commands in the other phases (Fetch, Decode, and Execute) must remain in place (freeze). The operation of reading and writing in SRAM memory is 6 clocks.
 
 ![ARM-processor Architecture with sram](./img/arm_processor_architecture_sram.png)
+
+## Cache
+
+Read and write time in external memory is several clocks. When it is needed to read from memory or write to it, the processor must stop (Freeze) until the memory operation is completed, so memory access is a bottleneck in processor performance. The best way to solve this problem and improve processor performance is to use cache. A cache is a high-speed memory that is made of processor type. Therefore, this type of memory can be accessed in one clock. Therefore, if instead of accessing the main memory, the cache is referred to, then there is no need to stop the processor from performing memory operations, and the performance of the processor will increase significantly.
+
+![How the cache is connected to the processor and memory](./img/cache.png)
+
+### Address
+
+| tag | index | offset |
+|:---:|:-----:|:------:|
+|  10 |   6   |    3   |
+
+### Structural specifications of cache
+
+| data | data | tag | valid | data | data | tag | valid | lru |
+|:----:|:----:|:---:|:-----:|:----:|:----:|:---:|:-----:|:---:|
+|  32  |  32  |  10 |   1   |  32  |  32  |  10 |   1   |  1  |
+
+An example of a 2-way cache
+
+![An example of a 2-way cache](./img/example_of_a_2-way_cache.png)
