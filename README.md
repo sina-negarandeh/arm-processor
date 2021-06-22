@@ -2,11 +2,31 @@
 
 A simple implementation of an ARM-based processor.
 
+- [ARM-processor](#arm-processor)
+  - [ARM-processor architecture](#arm-processor-architecture)
+  - [Condition codes](#condition-codes)
+    - [Condition codes table](#condition-codes-table)
+  - [ARM-processor instructions](#arm-processor-instructions)
+    - [Mathematical, logic, comparison and memory instruction table](#mathematical-logic-comparison-and-memory-instruction-table)
+    - [Jump instruction table](#jump-instruction-table)
+  - [ALU instructions](#alu-instructions)
+    - [ALU instructions table](#alu-instructions-table)
+  - [Shift](#shift)
+    - [32 bit immediate shift](#32-bit-immediate-shift)
+      - [32 bit immediate shift instructions](#32-bit-immediate-shift-instructions)
+    - [Immediate shift](#immediate-shift)
+      - [Immediate shift instruction](#immediate-shift-instruction)
+      - [Shift mode in immediate shift instruction](#shift-mode-in-immediate-shift-instruction)
+    - [Register shift](#register-shift)
+      - [Register shift instruction](#register-shift-instruction)
+  - [Initial architecture (Basic)](#initial-architecture-basic)
+  - [Operand forwarding (data forwarding) optimization](#operand-forwarding-data-forwarding-optimization)
+
 ## ARM-processor architecture
 
 The overall architecture of ARM processor simplified:
 
-![ARM-processor Architecture](./img/arm_processor_architecture.png)
+![ARM-processor Schematic](./img/arm_processor_schematic.png)
 
 ## Condition codes
 
@@ -134,6 +154,10 @@ In this case, the immediate bit is equal to zero, and the second operand is read
 | 31:28 | 27 | 26 | 25 |  24:21 | 20 | 19:16 | 15:12 |    11:7   |  6:5  | 4 | 3:0 |
 |:-----:|:--:|:--:|:--:|:------:|:--:|:-----:|:-----:|:---------:|:-----:|---|-----|
 |  Cond |  0 |  0 |  0 | opcode |  S |   Rn  |   Rd  | shift_imm | shift | 0 | Rm  |
+
+## Initial architecture (Basic)
+
+![ARM-processor Architecture](./img/arm_processor_architecture.png)
 
 ## Operand forwarding (data forwarding) optimization
 
