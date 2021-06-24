@@ -68,7 +68,7 @@ module Cache_Controller (
     sram_signal = 1'b0;
     case (ps)
       3'b000: begin
-        //
+        cache_read_en = 1'b1;
       end
       3'b001: begin
         cache_read_en = 1'b1;
@@ -86,7 +86,8 @@ module Cache_Controller (
     endcase
   end
                   
-  assign ready = (ns == 3'b000 && sram_ready) ? 1'b1 : 
+  assign ready = (ns == 3'b001 && hit) ? 1'b1 :
+             	   (ns == 3'b000 && sram_ready) ? 1'b1 : 
                  (ns != 3'b000) ? 1'b0 : 1'b1;
 endmodule
 
