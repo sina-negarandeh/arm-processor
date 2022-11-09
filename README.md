@@ -33,8 +33,6 @@ The overall architecture of ARM processor simplified:
 
 ConditionCheck module receives the condition bits (cond) from the input instruction and checks the condition with the help of the Status Register.
 
-The conditions for the condition to be met are listed in Table.
-
 ### Condition codes table
 
 | Opcode | Mnemonic extension |                      Meaning                     |                             Condition flag state                            |
@@ -58,7 +56,7 @@ The conditions for the condition to be met are listed in Table.
 
 ## ARM-processor instructions
 
-The processor designed and implemented in this project is a simplified ARM processor with 12 main instructions. This processor is capable of performing mathematical operations (ADD, ADC, SUB, SBC), logic operations (AND, ORR, EOR), comparison operations (CMP, TST), read and write operations in memory (LD, ST), has the jump operation (B). The list of operations and their details are given in Table of the CPU Command Set. The NOP command is not implemented as a command.
+The processor designed and implemented in this project is a simplified ARM processor with 12 main instructions. This processor is capable of performing mathematical operations (ADD, ADC, SUB, SBC), logic operations (AND, ORR, EOR), comparison operations (CMP, TST), read and write operations in memory (LD, ST), and the jump operation (B). The list of operations and their details are given in Table of the CPU Command Set. The NOP command is not implemented as a command.
 
 ### Mathematical, logic, comparison and memory instruction table
 
